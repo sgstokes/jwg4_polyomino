@@ -2,6 +2,37 @@ from polyomino.board import Rectangle
 
 
 def main():
+    base_tiles = {
+        "O4": [(0, 0), (0, 1), (1, 0), (1, 1)],
+        "T4": [(0, 0), (1, 1), (1, 0), (2, 0)],
+        "U5": [(0, 0), (0, 1), (1, 0), (2, 0), (2, 1)],
+        "X5": [(0, 1), (1, 0), (1, 1), (2, 1), (1, 2)],
+        "L5": [(0, 0), (1, 0), (0, 1), (0, 2), (0, 3)],
+        "P5": [(0, 0), (0, 1), (0, 2), (1, 1), (1, 2)],
+        "Z5": [(0, 2), (1, 0), (1, 1), (1, 2), (2, 0)],
+    }
+
+    z4_tiles = {
+        1: [(0, 0), (1, 0), (1, 1), (2, 1)],
+        2: [(0, 1), (1, 0), (1, 1), (2, 0)],
+    }
+    l4_tiles = {
+        1: [(0, 0), (1, 0), (1, 1), (1, 2)],
+        2: [(0, 0), (1, 0), (0, 1), (0, 2)],
+    }
+    l5_tiles = {
+        1: [(0, 0), (1, 0), (0, 1), (0, 2), (0, 3)],
+        2: [(0, 0), (1, 0), (1, 1), (1, 2), (1, 3)],
+    }
+    p5_tiles = {
+        1: [(0, 0), (0, 1), (0, 2), (1, 1), (1, 2)],
+        2: [(0, 0), (0, 1), (1, 2), (1, 1), (1, 2)],
+    }
+    z5_tiles = {
+        1: [(0, 2), (1, 0), (1, 1), (1, 2), (2, 0)],
+        2: [(0, 0), (1, 0), (1, 1), (1, 2), (2, 2)],
+    }
+
     combinations = {
         1: {
             "Z4A": [(0, 0), (1, 0), (1, 1), (2, 1)],
@@ -21,16 +52,6 @@ def main():
         },
     }
 
-    base_tiles = {
-        "O4": [(0, 0), (0, 1), (1, 0), (1, 1)],
-        "T4": [(0, 0), (1, 1), (1, 0), (2, 0)],
-        "L5": [(0, 0), (1, 0), (0, 1), (0, 2), (0, 3)],
-        "P5": [(0, 0), (0, 1), (0, 2), (1, 1), (1, 2)],
-        "U5": [(0, 0), (0, 1), (1, 0), (2, 0), (2, 1)],
-        "X5": [(0, 1), (1, 0), (1, 1), (2, 1), (1, 2)],
-        "Z5": [(0, 2), (1, 0), (1, 1), (1, 2), (2, 0)],
-    }
-
     missing_months = [(6, 0), (6, 1)]
     missing_days = [(0, 6), (1, 6), (5, 6), (6, 6)]
     missing_cells = missing_months + missing_days
@@ -39,19 +60,13 @@ def main():
 
     for m in months:
         month = m
-
         for d in days:
             day = d
-
-            print(f"{month} {day}")
 
             board = Rectangle(7, 7)
             for m in missing_cells:
                 board = board.remove(m)
-
             board = board.remove(month).remove(day)
-
-            print(board.display())
 
             for k in combinations.keys():
                 tiles = base_tiles.copy()
@@ -63,10 +78,14 @@ def main():
                 if solution is None:
                     continue
 
-            if solution is not None:
-                print(solution.display())
-            else:
+            if solution is None:
+                with open("output/no_solutions.txt", "a") as f:
+                    f.write(f"{month} {day}\n{board.display()}\n\n")
                 print("No solution found!")
+            else:
+                with open("output/solutions.txt", "a") as f:
+                    f.write(f"{month} {day}\n{solution.display()}\n\n")
+                print(solution.display())
 
 
 def get_cells(x, y, missing=None):
