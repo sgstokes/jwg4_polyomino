@@ -40,6 +40,8 @@ def main():
     missing_cells = missing_months + missing_days
     months = get_cells((0, 7), (0, 2), missing_months)
     days = get_cells((0, 7), (2, 7), missing_days)
+    month_add = {0: 1, 1: 7}
+    day_add = {2: 1, 3: 8, 4: 15, 5: 22, 6: 27}
 
     solutions_file = open("output/solutions.txt", "w")
     no_solutions_file = open("output/no_solutions.txt", "w")
@@ -64,12 +66,13 @@ def main():
                 if solution is not None:
                     break
 
+            date = f"{get_value(month, month_add)}-{get_value(day, day_add)}"
             if solution is None:
-                no_solutions_file.write(f"{month} {day}\n{board.display()}\n\n")
+                no_solutions_file.write(f"{date}\n{board.display()}\n\n")
                 print("No solution found!")
             else:
-                solutions_file.write(f"{month} {day}\n{solution.display()}\n\n")
-                print(f"{month} {day}\n{solution.display()}\n\n")
+                solutions_file.write(f"{date}\n{solution.display()}\n\n")
+                print(f"{date}\n{solution.display()}\n\n")
 
     solutions_file.close()
     no_solutions_file.close()
@@ -80,14 +83,19 @@ def get_cells(x, y, missing=None):
     y_start, y_stop = y
     cells = []
 
-    for i in range(x_start, x_stop):
-        for j in range(y_start, y_stop):
+    for j in range(y_start, y_stop):
+        for i in range(x_start, x_stop):
             cells.append((i, j))
 
     for m in missing:
         cells.remove(m)
 
     return cells
+
+
+def get_value(coordinates, add):
+    x, y = coordinates
+    return x + add[y]
 
 
 # Run main program
