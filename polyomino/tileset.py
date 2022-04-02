@@ -1,6 +1,6 @@
 import numpy as np
 
-from .error import CoverWithWrongSize, CoverWithWrongModulus
+from .error import CoverWithWrongModulus, CoverWithWrongSize
 from .utils import gcd_list
 
 

@@ -1,5 +1,4 @@
 import numpy as np
-
 from exact_cover import get_exact_cover
 
 from .error import CantPlaceSinglePiece

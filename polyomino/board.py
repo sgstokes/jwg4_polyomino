@@ -1,5 +1,4 @@
 import numpy as np
-
 from pretty_poly import make_ascii
 
 from .problem import TilingProblem
