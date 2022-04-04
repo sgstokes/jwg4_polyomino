@@ -7,6 +7,7 @@ class Solution(object):
         self.board = board
 
     def display(self):
+        print(self.tiling)
         return make_ascii(self.tiling)
 
     def python(self):
